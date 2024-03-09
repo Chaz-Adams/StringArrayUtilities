@@ -1,5 +1,12 @@
 package com.zipcodewilmington;
 
+import org.codehaus.plexus.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static org.codehaus.plexus.util.StringUtils.*;
+
 /**
  * Created by leon on 1/29/18.
  */
@@ -42,10 +49,11 @@ public class StringArrayUtils {
      * @return true if the array contains the specified `value`
      */ // TODO
     public static boolean contains(String[] array, String value) {
-        if(array.toString().contains(value)){
-            return true;
-        }
-        return false;
+        for(String string : array){
+            if(string == value){
+                return true;
+            }
+        }return false;
     }
 
     /**
@@ -65,12 +73,12 @@ public class StringArrayUtils {
      * @return true if the order of the array is the same backwards and forwards
      */ // TODO
     public static boolean isPalindromic(String[] array) {
-        String[] newArray = new String[array.length];
-        for (int i = array.length -1; i >= 0; i--) {
-            newArray[i] = array[newArray.length -1 -i];
+        String[] reversedArray = new String[array.length];
+        for (int i = array.length-1; i >= 0; i--) {
+            reversedArray[array.length-1-i] = array[i];
         }
-
-        return array == newArray;
+        return Arrays.toString(array).equals(Arrays.toString(reversedArray));
+        //without 'Arrays.toString()' it compares the hex ref of the obj which is different
     }
 
     /**
@@ -78,8 +86,13 @@ public class StringArrayUtils {
      * @return true if each letter in the alphabet has been used in the array
      */ // TODO
     public static boolean isPangramic(String[] array) {
-//        char[] alphabet = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r'
-//        ,'s','t','u','v','w','x','y','z'};
+        String newString = Arrays.toString(array);
+        char[] alphabet = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r'
+                ,'s','t','u','v','w','x','y','z'};
+
+        char[] charArray = newString.toCharArray();
+        return Arrays.toString(charArray).trim().contains(Arrays.toString(alphabet));
+
 //        char[] inputedAlphabet = new char[array.length];
 //
 //        for (int i = 0; i < array.length; i++) {
@@ -89,7 +102,7 @@ public class StringArrayUtils {
         string1.replaceAll("(.)(?=.*\1)","");
 
         return string1.length() == 26;*/
-        return false;
+
     }
 
     /**
@@ -132,7 +145,13 @@ public class StringArrayUtils {
      * @return array of Strings with consecutive duplicates removes
      */ // TODO
     public static String[] removeConsecutiveDuplicates(String[] array) {
-        return null;
+        ArrayList<String> arrayList = new ArrayList<>();
+        for (String str : array) {
+            if (arrayList.isEmpty() || (!(arrayList.get(arrayList.size() - 1).equals(str)))) {
+                arrayList.add(str);
+            }
+        }
+        return arrayList.toArray(new String[0]);
     }
 
     /**
@@ -140,7 +159,31 @@ public class StringArrayUtils {
      * @return array of Strings with each consecutive duplicate occurrence concatenated as a single string in an array of Strings
      */ // TODO
     public static String[] packConsecutiveDuplicates(String[] array) {
-        return null;
+        ArrayList<String> stringArrayList = new ArrayList<>();
+        Arrays.sort(array);
+        String currentString = "";
+
+        for(int i = 0; i < array.length; i++){
+            if(i == 0){
+                currentString += array[i];
+            }
+
+            else if(array[i] == currentString){
+                currentString += array[i];
+            }
+
+            else {
+                stringArrayList.add(currentString);
+                currentString = array[i];
+            }
+
+        }
+
+        String[] resultArray = new String[stringArrayList.size()];
+        for (int i = 0; i < stringArrayList.size(); i++) {
+            resultArray[i] = stringArrayList.get(i);
+        }
+        return resultArray;
     }
 
 
