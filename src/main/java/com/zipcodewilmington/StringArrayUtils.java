@@ -86,24 +86,30 @@ public class StringArrayUtils {
      * @return true if each letter in the alphabet has been used in the array
      */ // TODO
     public static boolean isPangramic(String[] array) {
-        String newString = Arrays.toString(array);
-        char[] alphabet = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r'
-                ,'s','t','u','v','w','x','y','z'};
-
-        char[] charArray = newString.toCharArray();
-        return Arrays.toString(charArray).trim().contains(Arrays.toString(alphabet));
-
-//        char[] inputedAlphabet = new char[array.length];
-//
-//        for (int i = 0; i < array.length; i++) {
-//            inputedAlphabet[i] = array[i].toCharArray()[0];
-//        }
-       /* String string1 = array.toString();
-        string1.replaceAll("(.)(?=.*\1)","");
-
-        return string1.length() == 26;*/
-
+            boolean containsAlpha = false;
+            int allAlpha = 0;
+            StringBuilder allLetters = new StringBuilder("abcdefghijklmnopqrstuvwxyz");
+            String arrayToString = "";
+            for (String eachString : array) {
+                arrayToString += eachString;
+            }
+            arrayToString = arrayToString.toLowerCase();
+            char [] stringToCharArray = arrayToString.toCharArray();
+            for(char character: stringToCharArray) {
+                for(int i = 0; i < allLetters.length(); i++) {
+                    if (character == allLetters.charAt(i)) {
+                        allAlpha++;
+                        allLetters.deleteCharAt(i);
+                    }
+                }
+            }
+            if (allAlpha == 26) {
+                containsAlpha = true;
+            }
+            return containsAlpha;
     }
+
+
 
     /**
      * @param array array of String objects
@@ -168,7 +174,7 @@ public class StringArrayUtils {
                 currentString += array[i];
             }
 
-            else if(array[i] == currentString){
+            else if(array[i].equals(array[i-1])){
                 currentString += array[i];
             }
 
@@ -179,11 +185,15 @@ public class StringArrayUtils {
 
         }
 
+        stringArrayList.add(currentString);
+        // add the last string not added in the loop
+
         String[] resultArray = new String[stringArrayList.size()];
         for (int i = 0; i < stringArrayList.size(); i++) {
             resultArray[i] = stringArrayList.get(i);
         }
-        return resultArray;
+        return resultArray;  //To view I can change to return String and then just
+                            // use the Arrays.toString()
     }
 
 
