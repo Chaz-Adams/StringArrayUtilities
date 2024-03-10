@@ -4,6 +4,7 @@ import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.codehaus.plexus.util.StringUtils.*;
 
@@ -110,7 +111,6 @@ public class StringArrayUtils {
     }
 
 
-
     /**
      * @param array array of String objects
      * @param value value to check array for
@@ -164,7 +164,29 @@ public class StringArrayUtils {
      * @param array array of chars
      * @return array of Strings with each consecutive duplicate occurrence concatenated as a single string in an array of Strings
      */ // TODO
+
+    public static String[] packConsecutiveDuplicates(String[] array){
+        List<String> result = new ArrayList<>();
+        String duplicateChars = array[0];
+
+        for (int i = 1; i < array.length; i++){
+            if (array[i].equals(array[i -1])) {
+                duplicateChars += array[i];
+            }else {
+                result.add(duplicateChars);
+                duplicateChars = array[i];
+            }
+        }
+
+        result.add((duplicateChars));
+
+        return result.toArray(new String[0]);
+    }
+
+
+    /*
     public static String[] packConsecutiveDuplicates(String[] array) {
+
         ArrayList<String> stringArrayList = new ArrayList<>();
         Arrays.sort(array);
         String currentString = "";
@@ -195,6 +217,6 @@ public class StringArrayUtils {
         return resultArray;  //To view I can change to return String and then just
                             // use the Arrays.toString()
     }
-
+    */
 
 }
